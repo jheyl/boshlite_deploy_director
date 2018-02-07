@@ -1,0 +1,34 @@
+---
+## Based on https://bosh.io/docs/virtualbox-cpi.html#cloud-config
+## but without Availability Zones
+
+networks:
+- name: compile
+  subnets:
+  - cloud_properties:
+      name: VM Network
+    dns:
+    - 10.254.174.10
+    - 10.104.128.235
+    gateway: 10.241.143.1
+    range: 10.241.143.0/24
+    static_ips:  10.241.143.44
+- name: default
+  subnets:
+  - range: 10.244.0.0/24
+    reserved: [10.244.0.1, 10.244.0.2]
+
+vm_types:
+- name: default
+  cloud_properties:
+    ephemeral_disk:
+      size: 1024
+      type: gp2
+
+disk_types:
+- name: default
+  disk_size: 1024
+
+compilation:
+  workers: 3
+  network: default
